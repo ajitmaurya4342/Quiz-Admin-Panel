@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import QuestionService from '../apiServices/QuestionService';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import BootstrapTable from 'react-bootstrap-table-next';
+
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import paginationFactory, {
+  PaginationProvider,
+} from 'react-bootstrap-table2-paginator';
 import {
   Button,
   Card,
@@ -22,14 +27,89 @@ const FormPage = props => {
     game_id: '',
     level_id: '',
     level_q_is_active: '1',
-    question_array: [],
-    question_id: '',
+    question_id: [],
+    dummyquestion_id: '',
   });
   const [formData, updateFormData] = useState(initialFormData);
   const [gameData, updateGameData] = useState([]);
   const [levelData, updateLevelData] = useState([]);
   const [questionDataArray, newQuestionDataArray] = useState([]);
-  const [answerArry, updateAnswerArry] = useState(['', '', '', '']);
+  const [levelAddedAnsAry, updateAnswerArry] = useState([]);
+  const columnsAdded = [
+    {
+      dataField: 'question',
+      text: 'Question',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'question_type',
+      text: 'Type',
+      filter: textFilter(),
+    },
+
+    {
+      dataField: '',
+      text: 'Action',
+      formatter: (cellContent, row) => (
+        <div className="checkbox disabled">
+          <Button
+            onClick={() => AddNewQuestion()}
+            outline
+            color="success"
+            size="sm"
+          >
+            Edit
+          </Button>{' '}
+        </div>
+      ),
+    },
+  ];
+
+  const columns = [
+    {
+      dataField: 'question',
+      text: 'Question',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'question_type',
+      text: 'Type',
+      filter: textFilter(),
+    },
+
+    {
+      dataField: '',
+      text: 'Action',
+      formatter: (cellContent, row) => (
+        <div className="checkbox disabled">
+          <Button
+            onClick={() => AddNewQuestion()}
+            outline
+            color="success"
+            size="sm"
+          >
+            Edit
+          </Button>{' '}
+        </div>
+      ),
+    },
+  ];
+
+  function AddNewQuestion(row, rowIndex, id) {
+    //let dummyV = [...levelAddedAnsAry];
+    console.log(row, rowIndex, id);
+    // let index = formData.question_id.indexOf(id);
+    //  dummyV.push(row);
+    console.log(levelAddedAnsAry, questionDataArray);
+    // updateAnswerArry(dummyV);
+
+    // updateFormData({
+    //   ...formData,
+    //   question_id: [...formData.question_id].push(id),
+    // });
+    // newQuestionDataArray([...questionDataArray].splice(rowIndex, 1));
+    // console.log(levelAddedAnsAry, formData, questionDataArray, 'hkjh', dummyV);
+  }
   const handleChange = e => {
     updateFormData({
       ...formData,
@@ -46,26 +126,26 @@ const FormPage = props => {
       }
     }
 
-    if (e.target.name === 'question_id') {
-      let index = formData.question_array.indexOf(e.target.value);
+    if (e.target.name === 'dummyquestion_id') {
+      let index = formData.question_id.indexOf(e.target.value);
       if (index > -1) {
-        formData.question_array.splice(index, 1);
+        formData.question_id.splice(index, 1);
       } else {
-        formData.question_array.push(e.target.value);
+        formData.question_id.push(e.target.value);
       }
-      formData.question_id = '';
+      formData.dummyquestion_id = '';
     }
   };
 
   useEffect(() => {
-    if (props.location.state.question_id) {
-      QuestionService.EditQuestion(props.location.state.question_id)
+    if (props.location.state.level_id) {
+      QuestionService.EditLevelList(props.location.state.level_id)
         .then(response => {
           const { data } = response;
           if (data) {
-            console.log(data);
-            updateFormData(...data.Record.data);
-            updateAnswerArry(data.Record.data[0].options.split(','));
+            console.log(data.Record.data[0], 'j', data);
+            updateFormData(data.Record.data[0]);
+            updateAnswerArry(data.questionArray);
           } else {
             console.log('hghj');
           }
@@ -102,12 +182,11 @@ const FormPage = props => {
         console.log('On Catch Add_Submission_Tagging_User', error);
       })
       .finally(() => {});
-
+    getQuestions();
     // ... submit to API or something
   }, []);
   const getQuestions = e => {
-    e.preventDefault();
-    QuestionService.GetLevelQuestionList(formData.question_type)
+    QuestionService.GetLevelQuestionList()
       .then(response => {
         const { data } = response;
         if (data && data.status === true) {
@@ -178,27 +257,22 @@ const FormPage = props => {
                     ))}
                   </Input>
                 </FormGroup>
-                <FormGroup>
-                  <Label for="exampleGame">Question Type</Label>
-                  <Input
-                    value={formData.question_type}
-                    type="select"
-                    name="question_type"
-                    onChange={handleChange}
-                  >
-                    <option>Select Question Type</option>
-                    <option value="1">Image</option>
-                    <option value="2">Math</option>
-                    <option value="3">General</option>
-                  </Input>
-                </FormGroup>
-                <div>
-                  <Button size="sm" color="info" onClick={getQuestions}>
-                    Get Questions
-                  </Button>
-                </div>
+                <BootstrapTable
+                  keyField="id"
+                  data={levelAddedAnsAry}
+                  columns={columns}
+                  pagination={paginationFactory()}
+                  filter={filterFactory()}
+                />
+                <BootstrapTable
+                  keyField="id1"
+                  data={questionDataArray}
+                  columns={columnsAdded}
+                  pagination={paginationFactory()}
+                  filter={filterFactory()}
+                />
 
-                {questionDataArray.length > 0 && (
+                {/* {questionDataArray.length > 0 && (
                   <Table responsive className="mt-3">
                     <thead>
                       <tr>
@@ -215,7 +289,7 @@ const FormPage = props => {
                               {' '}
                               <FormGroup check>
                                 <Input
-                                  name="question_id"
+                                  name="dummyquestion_id"
                                   value={item.question_id}
                                   onChange={handleChange}
                                   type="checkbox"
@@ -230,8 +304,8 @@ const FormPage = props => {
                       })}
                     </tbody>
                   </Table>
-                )}
-                {formData.question_array.length > 0 && (
+                )}*/}
+                {formData.question_id.length > 0 && (
                   <div className="mt-3">
                     <Button color="success" onClick={handleSubmit}>
                       Submit

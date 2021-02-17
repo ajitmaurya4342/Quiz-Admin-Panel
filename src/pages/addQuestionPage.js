@@ -14,7 +14,7 @@ import {
   Row,
 } from 'reactstrap';
 
-const FormPage = (props) => {
+const FormPage = props => {
   const initialFormData = Object({
     question_type: '',
     imageFile: '',
@@ -99,12 +99,11 @@ const FormPage = (props) => {
                     onChange={handleChange}
                   >
                     <option>Select Question Type</option>
-                    <option value="1">Image</option>
-                    <option value="2">Math</option>
-                    <option value="3">General</option>
+                    <option value="2">Image</option>
+                    <option value="1">Question</option>
                   </Input>
                 </FormGroup>
-                {formData.question_type === '1' && (
+                {formData.question_type === '2' && (
                   <FormGroup>
                     <Label for="exampleFile">Upload Image File</Label>
                     <Input
@@ -121,7 +120,7 @@ const FormPage = (props) => {
                 <FormGroup>
                   <Label for="exampleText">Question</Label>
                   <Input
-                    disabled={formData.question_type === '1'}
+                    disabled={formData.question_type === '2'}
                     value={formData.question}
                     type="textarea"
                     name="question"

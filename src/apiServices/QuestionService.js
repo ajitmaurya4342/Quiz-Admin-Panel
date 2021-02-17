@@ -20,6 +20,9 @@ export default {
   GetLevelList() {
     return Api().get('admin/LevelList');
   },
+  EditLevelList(level_id) {
+    return Api().get(`admin/LevelList?level_id=${level_id}`);
+  },
   GetLevelQuestionSetList() {
     return Api().get('admin/LevelQuestionSetList');
   },
@@ -27,8 +30,8 @@ export default {
   AddLevelQuestion(payload) {
     return Api().post('admin/addEditLevel', payload);
   },
-  GetLevelQuestionList(questionType) {
-    return Api().get(`admin/questionlist?question_type=${questionType}`);
+  GetLevelQuestionList() {
+    return Api().get(`admin/questionlist?isUnique=1`);
   },
 
   //   GetSubmissionFeedbacks(payload) {

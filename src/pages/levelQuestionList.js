@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import paginationFactory, {
+  PaginationProvider,
+} from 'react-bootstrap-table2-paginator';
+
 import {
   Card,
   CardBody,
@@ -13,14 +19,52 @@ import QuestionService from '../apiServices/QuestionService';
 import { MdEdit } from 'react-icons/md';
 
 const QuestionListPage = props => {
+  const columns = [
+    {
+      dataField: 'game_name',
+      text: 'Game Name',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'level',
+      text: 'Level',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'total_question',
+      text: 'Question',
+      filter: textFilter(),
+    },
+    {
+      dataField: '',
+      text: 'Action',
+      formatter: (cellContent, row) => (
+        <div className="checkbox disabled">
+          <Button
+            onClick={() => handleEditQuestion(row.level_id)}
+            outline
+            color="success"
+            size="sm"
+          >
+            <MdEdit /> Edit
+          </Button>{' '}
+        </div>
+      ),
+    },
+  ];
   let history = useHistory();
   const [questionDataArray, newQuestionDataArray] = useState([]);
+
+  const paginationOption = {
+    custom: true,
+    totalSize: questionDataArray.length,
+  };
   useEffect(() => {
     getUserList();
   }, []);
   const getUserList = e => {
     // ... submit to API or something
-    QuestionService.GetLevelQuestionSetList()
+    QuestionService.GetLevelList()
       .then(response => {
         const { data } = response;
         if (data && data.status === true) {
@@ -59,11 +103,11 @@ const QuestionListPage = props => {
       level_q_id: '',
     });
   }
-  // function handleEditQuestion(id) {
-  //   history.push('/questionForm', {
-  //     level_q_id: id,
-  //   });
-  // }
+  function handleEditQuestion(id) {
+    history.push('/addLevelQuestionSet', {
+      level_id: id,
+    });
+  }
 
   return (
     <div className="mb-3">
@@ -80,70 +124,28 @@ const QuestionListPage = props => {
                 Add New Set
               </Button>{' '}
             </CardHeader>
-
-            <CardBody>
-              <Table responsive>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Question</th>
-                    <th>Game</th>
-                    <th>Level</th>
-                    <th>Type</th>
-
-                    <th>Remove</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {questionDataArray.map((item, index) => {
-                    return (
-                      <tr>
-                        <th scope="row">{index + 1}</th>
-                        <td>{item.question}</td>
-                        <td>{item.game_name}</td>
-                        <td>{item.level}</td>
-
-                        <td>
-                          {item.question_type === '1'
-                            ? 'Image'
-                            : item.question_type === '2'
-                            ? 'Math'
-                            : item.question_type === '3'
-                            ? 'General'
-                            : item.question_type === '4'
-                            ? 'Logo'
-                            : item.question_type}
-                        </td>
-                        <td>
-                          <div className="custom-control custom-switch">
-                            <input
-                              onClick={() => handleEditLevlQ(item)}
-                              type="checkbox"
-                              className="custom-control-input"
-                              id={index}
-                            />
-                            <label
-                              className="custom-control-label"
-                              htmlFor={index}
-                            >
-                              Remove Question
-                            </label>
-                          </div>
-                          {/* <Button
-                            onClick={() => handleEditQuestion(item.question_id)}
-                            outline
-                            color="success"
-                            size="sm"
-                          >
-                            <MdEdit /> Edit
-                          </Button>{' '} */}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-            </CardBody>
+            <BootstrapTable
+              keyField="id"
+              data={questionDataArray}
+              columns={columns}
+              pagination={paginationFactory()}
+              filter={filterFactory()}
+            />
+            {/* <ToolkitProvider
+              keyField="id"
+              data={questionDataArray}
+              columns={columns}
+              search
+              pagination={paginationFactory()}
+            >
+              {props => (
+                <div>
+                  <SearchBar {...props.searchProps} />
+                  <hr />
+                  <BootstrapTable {...props.baseProps} />
+                </div>
+              )}
+            </ToolkitProvider> */}
           </Card>
         </Col>
       </Row>
