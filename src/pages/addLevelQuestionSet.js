@@ -32,47 +32,49 @@ const FormPage = props => {
   });
   const [formData, updateFormData] = useState(initialFormData);
   const [gameData, updateGameData] = useState([]);
+  const [searchData, updatesearchData] = useState('');
   const [levelData, updateLevelData] = useState([]);
   const [levelAddedAnsAry, updateAnswerArry] = useState([]);
 
   const [questionDataArray, newQuestionDataArray] = useState([]);
+  const [tempQuestionDataArray, newTempQuestionDataArray] = useState([]);
 
 
-  const columns = [
-    {
-      dataField: 'question',
-      text: 'Question',
-      filter: textFilter(),
-      formatter: (cellContent, row, rowIndex) => (
-        <div className="checkbox disabled">
-          {row.question_type == 1 && <td>{row.question}</td>}
-          {row.question_type == 2 && <td><img src={row.question} style={{ width: "25%" }} /> </td>}
-        </div>
-      ),
-    },
-    {
-      dataField: 'question_type',
-      text: 'Type',
-      filter: textFilter(),
-    },
+  // const columns = [
+  //   {
+  //     dataField: 'question',
+  //     text: 'Question',
+  //     filter: textFilter(),
+  //     formatter: (cellContent, row, rowIndex) => (
+  //       <div className="checkbox disabled">
+  //         {row.question_type == 1 && <td>{row.question}</td>}
+  //         {row.question_type == 2 && <td><img src={row.question} style={{ width: "25%" }} /> </td>}
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     dataField: 'question_type',
+  //     text: 'Type',
+  //     filter: textFilter(),
+  //   },
 
-    {
-      dataField: '',
-      text: 'Action',
-      formatter: (cellContent, row, rowIndex) => (
-        <div className="checkbox disabled">
-          <Button
-            onClick={() => AddNewQuestion(row, rowIndex)}
-            outline
-            color="success"
-            size="sm"
-          >
-            Add
-          </Button>
-        </div>
-      ),
-    },
-  ];
+  //   {
+  //     dataField: '',
+  //     text: 'Action',
+  //     formatter: (cellContent, row, rowIndex) => (
+  //       <div className="checkbox disabled">
+  //         <Button
+  //           onClick={() => AddNewQuestion(row, rowIndex)}
+  //           outline
+  //           color="success"
+  //           size="sm"
+  //         >
+  //           Add
+  //         </Button>
+  //       </div>
+  //     ),
+  //   },
+  // ];
 
   // const columnsAdded = [
   //   {
@@ -104,9 +106,24 @@ const FormPage = props => {
   //   },
   // ];
 
+  function searchTable(e) {
+
+    updatesearchData(e.target.value)
+
+    let arrayNew = tempQuestionDataArray.filter(x => {
+      return x.question_type.toLowerCase().toString().includes(e.target.value.toLowerCase()) || x.question.toLowerCase().includes(e.target.value.toLowerCase())
+    });
 
 
-  function AddNewQuestion(row, rowIndex) {
+    newQuestionDataArray(arrayNew);
+
+    console.log(arrayNew)
+
+
+
+  }
+
+  function AddQuestion(row, rowIndex) {
     let dummyV = [...levelAddedAnsAry];
     console.log(row, rowIndex);
     // let index = formData.question_id.indexOf(id);
@@ -114,17 +131,30 @@ const FormPage = props => {
     console.log(levelAddedAnsAry, questionDataArray);
     updateAnswerArry(dummyV);
 
+
     let objFormData = { ...formData };
-    objFormData["question_id"].push(row.question_id)
+    objFormData["question_id"].push(row.question_id.toString())
     console.log(objFormData);
 
     updateFormData(objFormData)
 
 
     let newDummyV1 = [...questionDataArray];
-    newDummyV1.splice(rowIndex, 1);
+    let findIndexNew = newDummyV1.findIndex(x => {
+      return x.question_id == row.question_id
+    })
+    newDummyV1.splice(findIndexNew, 1);
     console.log(newDummyV1);
     newQuestionDataArray(newDummyV1);
+
+    let newDummyVTemp = [...tempQuestionDataArray];
+    findIndexNew = newDummyVTemp.findIndex(x => {
+      return x.question_id == row.question_id
+    })
+    newDummyVTemp.splice(findIndexNew, 1);
+    console.log(newDummyVTemp);
+    newTempQuestionDataArray(newDummyVTemp)
+
     // console.log(levelAddedAnsAry, formData, questionDataArray, 'hkjh', dummyV);
   }
   function RemoveQuestion(row, rowIndex) {
@@ -135,6 +165,12 @@ const FormPage = props => {
     newQuestionDataArray(newDummyV1);
 
 
+    let newDummyVTemp = [row, ...tempQuestionDataArray];
+    // newDummyV1.push(row);
+    console.log(newDummyVTemp);
+    newTempQuestionDataArray(newDummyVTemp);
+
+
     let dummyV = [...levelAddedAnsAry];
     console.log(row, rowIndex);
     dummyV.splice(rowIndex, 1);
@@ -142,7 +178,7 @@ const FormPage = props => {
     updateAnswerArry(dummyV);
 
     let objFormData = { ...formData };
-    let indexCheck = objFormData["question_id"].indexOf(row.question_id);
+    let indexCheck = objFormData["question_id"].indexOf(row.question_id.toString());
     objFormData["question_id"].splice(indexCheck, 1);
     console.log(objFormData);
 
@@ -177,23 +213,7 @@ const FormPage = props => {
   };
 
   useEffect(() => {
-    if (props.location.state.level_id) {
-      QuestionService.EditLevelList(props.location.state.level_id)
-        .then(response => {
-          const { data } = response;
-          if (data) {
-            console.log(data.Record.data[0], 'j', data);
-            updateFormData(data.Record.data[0]);
-            updateAnswerArry(data.questionArray);
-          } else {
-            console.log('hghj');
-          }
-        })
-        .catch(error => {
-          console.log('On Catch Add_Submission_Tagging_User', error);
-        })
-        .finally(() => { });
-    }
+
 
     QuestionService.GetGameList()
       .then(response => {
@@ -224,12 +244,31 @@ const FormPage = props => {
     getQuestions();
     // ... submit to API or something
   }, []);
-  const getQuestions = e => {
+  function getQuestions() {
+    if (props.location.state.level_id) {
+      QuestionService.EditLevelList(props.location.state.level_id)
+        .then(response => {
+          const { data } = response;
+          if (data) {
+            console.log(data.Record.data[0], 'j', data);
+            updateFormData(data.Record.data[0]);
+            updateAnswerArry(data.questionArray);
+          } else {
+            console.log('hghj');
+          }
+        })
+        .catch(error => {
+          console.log('On Catch Add_Submission_Tagging_User', error);
+        })
+        .finally(() => { });
+    }
     QuestionService.GetLevelQuestionList()
       .then(response => {
         const { data } = response;
         if (data && data.status === true) {
           newQuestionDataArray(data.Record.data);
+          newTempQuestionDataArray(data.Record.data);
+
         } else {
         }
       })
@@ -349,13 +388,66 @@ const FormPage = props => {
                 <hr />
                 <hr />
 
-                {questionDataArray.length > 0 && <BootstrapTable
-                  keyField="id1"
-                  data={questionDataArray}
-                  columns={columns}
-                  pagination={paginationFactory()}
-                  filter={filterFactory()}
-                />}
+                <FormGroup>
+                  <Label for="exampleGame">Search</Label>
+                  <Input
+                    value={searchData}
+                    type="text"
+                    placeHolder="Search Question"
+                    name="level_id"
+                    onChange={searchTable}
+
+                  >
+                    <option value="">Select Level</option>
+                    {levelData.map((item, index) => (
+                      <option value={item.level_id}>{item.level}</option>
+                    ))}
+                  </Input>
+                </FormGroup>
+
+                {questionDataArray.length > 0 && (
+                  <Table responsive className="mt-3">
+                    <thead>
+                      <tr>
+
+                        <th>SR.No</th>
+                        <th>Question</th>
+                        <th>Type</th>
+                        <th>#</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {questionDataArray.map((item, index) => {
+                        return (
+                          <tr>
+
+                            <td>{index + 1}</td>
+                            {item.question_type == 1 && <td>{item.question}</td>}
+                            {item.question_type == 2 && <td><img src={item.question} style={{ width: "25%" }} /> </td>}
+
+                            <td>{item.question_type}</td>
+                            <th scope="row">
+                              {' '}
+                              <FormGroup check>
+                                <div className="checkbox disabled">
+                                  <Button
+                                    onClick={() => AddQuestion(item, index)}
+                                    outline
+                                    color="success"
+                                    size="sm"
+                                  >
+                                    Add
+          </Button>
+                                </div>
+                              </FormGroup>
+                            </th>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                )}
+
 
 
                 {formData.question_id.length > 0 && (
