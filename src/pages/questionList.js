@@ -39,7 +39,17 @@ const QuestionListPage = props => {
       filter: textFilter(),
       formatter: (cellContent, row) => (
         <div>
-          <span>{row.question_type == '2' ? 'Image' : 'Question'}</span>{' '}
+          <span
+            style={
+              row.level_q_id
+                ? { display: 'block', color: 'green' }
+                : { display: 'block' }
+            }
+          >
+            {row.question_type == '2' ? 'Image' : 'Question'} <br></br>
+            {row.level_q_id ? 'ADDED TO Level ' : ''} {row.level}{' '}
+            {row.game_name}
+          </span>{' '}
         </div>
       ),
     },

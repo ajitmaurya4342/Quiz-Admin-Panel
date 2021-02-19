@@ -22,9 +22,9 @@ const Header = () => {
   return (
     <div>
       {/* className={bem.b('bg-white')} */}
-      <Navbar light expand style={{ background: '#f8f9fa' }}>
+      <Navbar light expand style={{ background: '#82daac' }}>
         <Nav navbar className="mr-2">
-          <Button outline onClick={handleSidebarControlButton}>
+          <Button color="warning" onClick={handleSidebarControlButton}>
             <MdClearAll size={25} />
           </Button>
         </Nav>
