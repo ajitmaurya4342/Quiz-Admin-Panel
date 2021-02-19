@@ -28,7 +28,6 @@ const QuestionListPage = props => {
     {
       dataField: 'options',
       text: 'Options',
-      filter: textFilter(),
     },
     {
       dataField: 'correct_options',
@@ -36,7 +35,8 @@ const QuestionListPage = props => {
     },
     {
       dataField: 'question_type',
-      text: 'Type',
+      text: 'Type (1-Ques,2-Img)',
+      filter: textFilter(),
       formatter: (cellContent, row) => (
         <div>
           <span>{row.question_type == '2' ? 'Image' : 'Question'}</span>{' '}
