@@ -21,7 +21,8 @@ const Header = () => {
 
   return (
     <div>
-      <Navbar light expand className={bem.b('bg-white')}>
+      {/* className={bem.b('bg-white')} */}
+      <Navbar light expand style={{ background: '#f8f9fa' }}>
         <Nav navbar className="mr-2">
           <Button outline onClick={handleSidebarControlButton}>
             <MdClearAll size={25} />

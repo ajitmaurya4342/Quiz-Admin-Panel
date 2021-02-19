@@ -28,7 +28,7 @@ const navItems = [
   { to: '/UserList', name: 'Users', exact: false, Icon: MdPerson },
   {
     to: '/QuestionList',
-    name: 'Question Master',
+    name: 'Question List',
     exact: false,
     Icon: MdBorderAll,
   },
