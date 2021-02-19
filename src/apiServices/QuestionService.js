@@ -28,6 +28,7 @@ export default {
   },
 
   AddLevelQuestion(payload) {
+    console.log(payload);
     return Api().post('admin/addEditLevel', payload);
   },
   GetLevelQuestionList() {

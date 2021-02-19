@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+
 import paginationFactory, {
   PaginationProvider,
 } from 'react-bootstrap-table2-paginator';
@@ -32,8 +33,7 @@ const QuestionListPage = props => {
     },
     {
       dataField: 'total_question',
-      text: 'Question',
-      filter: textFilter(),
+      text: 'Total Question',
     },
     {
       dataField: '',
@@ -55,10 +55,6 @@ const QuestionListPage = props => {
   let history = useHistory();
   const [questionDataArray, newQuestionDataArray] = useState([]);
 
-  const paginationOption = {
-    custom: true,
-    totalSize: questionDataArray.length,
-  };
   useEffect(() => {
     getUserList();
   }, []);
@@ -116,36 +112,24 @@ const QuestionListPage = props => {
           <Card className="m-3">
             <CardHeader>
               Level Set{' '}
-              <Button
+              {/* <Button
                 color="success"
                 onClick={handleNewQuestion}
                 className="float-right"
               >
                 Add New Set
-              </Button>{' '}
+              </Button>{' '} */}
             </CardHeader>
-            <BootstrapTable
-              keyField="id"
-              data={questionDataArray}
-              columns={columns}
-              pagination={paginationFactory()}
-              filter={filterFactory()}
-            />
-            {/* <ToolkitProvider
-              keyField="id"
-              data={questionDataArray}
-              columns={columns}
-              search
-              pagination={paginationFactory()}
-            >
-              {props => (
-                <div>
-                  <SearchBar {...props.searchProps} />
-                  <hr />
-                  <BootstrapTable {...props.baseProps} />
-                </div>
-              )}
-            </ToolkitProvider> */}
+
+            <CardBody>
+              <BootstrapTable
+                keyField="id"
+                data={questionDataArray}
+                columns={columns}
+                pagination={paginationFactory()}
+                filter={filterFactory()}
+              />
+            </CardBody>
           </Card>
         </Col>
       </Row>

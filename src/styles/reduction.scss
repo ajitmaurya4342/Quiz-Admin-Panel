@@ -19,5 +19,40 @@
 
 // themes
 @import 'themes/colors';
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #47c8ad;
+  border-color: #f4feae;
+}
+.btn-secondary {
+  color: #fff;
+  background: #48c8ac linear-gradient(180deg, #48c7ac, #fc5c7d) repeat-x;
+  border-color: #f4feae;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+  border-bottom-width: 3px;
+}
+.table-bordered th,
+.table-bordered td {
+  border: 2px solid #dee2e6;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #47c7ac;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+.btn-warning {
+  color: #212529;
+  background: #eefcae linear-gradient(180deg, #f2feae, #ffd700) repeat-x;
+  border-color: #ffd700;
+}
 
 // demos (only for demo pages)

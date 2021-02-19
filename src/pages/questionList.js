@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+
+import paginationFactory, {
+  PaginationProvider,
+} from 'react-bootstrap-table2-paginator';
 import {
   Card,
   CardBody,
@@ -13,6 +19,48 @@ import QuestionService from '../apiServices/QuestionService';
 import { MdEdit } from 'react-icons/md';
 
 const QuestionListPage = props => {
+  const columns = [
+    {
+      dataField: 'question',
+      text: 'Question',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'options',
+      text: 'Options',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'correct_options',
+      text: 'Correct Option',
+    },
+    {
+      dataField: 'question_type',
+      text: 'Type',
+      formatter: (cellContent, row) => (
+        <div>
+          <span>{row.question_type == '2' ? 'Image' : 'Question'}</span>{' '}
+        </div>
+      ),
+    },
+
+    {
+      dataField: '',
+      text: 'Action',
+      formatter: (cellContent, row) => (
+        <div className="checkbox disabled">
+          <Button
+            onClick={() => handleEditQuestion(row.question_id)}
+            outline
+            color="success"
+            size="sm"
+          >
+            <MdEdit /> Edit
+          </Button>{' '}
+        </div>
+      ),
+    },
+  ];
   let history = useHistory();
   const [questionDataArray, newQuestionDataArray] = useState([]);
   useEffect(() => {
@@ -60,49 +108,14 @@ const QuestionListPage = props => {
                 Add Question
               </Button>{' '}
             </CardHeader>
-
             <CardBody>
-              <Table responsive>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Question</th>
-                    <th>Options</th>
-                    <th>Correct Options</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {questionDataArray.map((item, index) => {
-                    return (
-                      <tr>
-                        <th scope="row">{index + 1}</th>
-                        <td>{item.question}</td>
-                        <td>{item.options}</td>
-                        <td>{item.correct_options}</td>
-                        <td>{item.question_type}</td>
-                        <td>
-                          {item.question_is_active === '1'
-                            ? 'Active'
-                            : 'Deleted'}
-                        </td>
-                        <td>
-                          <Button
-                            onClick={() => handleEditQuestion(item.question_id)}
-                            outline
-                            color="success"
-                            size="sm"
-                          >
-                            <MdEdit /> Edit
-                          </Button>{' '}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
+              <BootstrapTable
+                keyField="id"
+                data={questionDataArray}
+                columns={columns}
+                pagination={paginationFactory()}
+                filter={filterFactory()}
+              />
             </CardBody>
           </Card>
         </Col>

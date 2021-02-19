@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import QuestionService from '../apiServices/QuestionService';
+import NotificationSystem from 'react-notification-system';
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -15,6 +17,19 @@ import {
 } from 'reactstrap';
 
 const FormPage = props => {
+  const notificationSystem = createRef();
+  const addNotification = e => {
+    const notification = notificationSystem.current;
+    notification.addNotification({
+      message:
+        formData.question_id == ''
+          ? 'Question Added Successfully'
+          : 'Question Updated Successfully',
+      level: 'success',
+      position: 'tc',
+      autoDismiss: 2,
+    });
+  };
   const initialFormData = Object({
     question_type: '',
     imageFile: '',
@@ -59,9 +74,14 @@ const FormPage = props => {
         .finally(() => {});
     }
   }, []);
-
+  function showMsg() {
+    return (
+      <Alert color="primary">This is a primary alert — check it out!</Alert>
+    );
+  }
   const handleSubmit = e => {
     e.preventDefault();
+    e.persist();
     formData.options = answerArry.toString();
     console.log(formData);
 
@@ -69,7 +89,19 @@ const FormPage = props => {
       .then(response => {
         const { data } = response;
         if (data) {
-          // alert();
+          addNotification();
+          let empObj = {
+            question_type: '',
+            imageFile: '',
+            imageUrl: '',
+            options: '',
+            question: '',
+            correct_options: '',
+            question_is_active: '1',
+            question_id: '',
+          };
+          updateFormData(empObj);
+          updateAnswerArry(['', '', '', '']);
         } else {
         }
       })
@@ -162,6 +194,7 @@ const FormPage = props => {
                     </div>
                   </div>
                 ))}
+                <NotificationSystem ref={notificationSystem} />
                 <div>
                   <Button color="success" onClick={handleSubmit}>
                     Submit

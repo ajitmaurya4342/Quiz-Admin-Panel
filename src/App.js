@@ -1,21 +1,22 @@
-
-
-import {MainLayout,EmptyLayout } from 'components/Layout';
-
+import { MainLayout, EmptyLayout } from 'components/Layout';
 
 import React from 'react';
 import { Spinner } from 'reactstrap';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
-
+import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
 const Login = React.lazy(() => import('pages/loginForm'));
 const AddQuestionPage = React.lazy(() => import('pages/addQuestionPage'));
 const UserList = React.lazy(() => import('pages/userList'));
 const QuestionList = React.lazy(() => import('pages/questionList'));
 const LevelQuestionList = React.lazy(() => import('pages/levelQuestionList'));
-const AddLevelQuestionSet = React.lazy(() => import('pages/addLevelQuestionSet'));
+const AddLevelQuestionSet = React.lazy(() =>
+  import('pages/addLevelQuestionSet'),
+);
+
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
 };
@@ -24,24 +25,28 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter basename={getBasename()}>
-     
-          <Switch>
-           
-            <MainLayout breakpoint={this.props.breakpoint}>
-              <React.Suspense fallback={<Spinner/>}>
- 
-                <Route exact path="/"   layout={EmptyLayout} component={Login} />
-                <Route exact path="/dasboard" component={DashboardPage} />
-                <Route exact path="/UserList" component={UserList} />
-                <Route exact path="/QuestionList" component={QuestionList} />
-                <Route exact path="/questionForm" component={AddQuestionPage} />
-                <Route exact path="/LevelQuestionList" component={LevelQuestionList} />
-                <Route exact path="/AddLevelQuestionSet" component={AddLevelQuestionSet} />
-              </React.Suspense>
-            </MainLayout>
-            <Redirect to="/" />
-          </Switch>
-      
+        <Switch>
+          <MainLayout breakpoint={this.props.breakpoint}>
+            <React.Suspense fallback>
+              <Route exact path="/" layout={EmptyLayout} component={Login} />
+              <Route exact path="/dasboard" component={DashboardPage} />
+              <Route exact path="/UserList" component={UserList} />
+              <Route exact path="/QuestionList" component={QuestionList} />
+              <Route exact path="/questionForm" component={AddQuestionPage} />
+              <Route
+                exact
+                path="/LevelQuestionList"
+                component={LevelQuestionList}
+              />
+              <Route
+                exact
+                path="/AddLevelQuestionSet"
+                component={AddLevelQuestionSet}
+              />
+            </React.Suspense>
+          </MainLayout>
+          <Redirect to="/" />
+        </Switch>
       </BrowserRouter>
     );
   }
