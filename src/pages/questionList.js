@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import Iframe from 'react-iframe';
 
 import paginationFactory, {
   PaginationProvider,
@@ -24,7 +25,27 @@ const QuestionListPage = props => {
       dataField: 'question',
       text: 'Question',
       filter: textFilter(),
+      formatter: (cellContent, row) => (
+        <div>
+          <span>
+            {row.question_type == '2' ? (
+              <Iframe
+                url={row.question}
+                width="120px"
+                height="120px"
+                id="myId"
+                className="myClassname"
+                display="initial"
+                position="relative"
+              />
+            ) : (
+              row.question
+            )}
+          </span>
+        </div>
+      ),
     },
+
     {
       dataField: 'options',
       text: 'Options',

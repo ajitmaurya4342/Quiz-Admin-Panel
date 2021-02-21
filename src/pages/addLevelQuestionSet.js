@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import QuestionService from '../apiServices/QuestionService';
 import BootstrapTable from 'react-bootstrap-table-next';
+import Iframe from 'react-iframe';
 
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory, {
@@ -358,10 +359,19 @@ const FormPage = props => {
                                 )}
                                 {item.question_type == 2 && (
                                   <td>
-                                    <img
+                                    <Iframe
+                                      url={item.question}
+                                      width="120px"
+                                      height="120px"
+                                      id="myId"
+                                      className="myClassname"
+                                      display="initial"
+                                      position="relative"
+                                    />
+                                    {/* <img
                                       src={item.question}
                                       style={{ width: '25%' }}
-                                    />{' '}
+                                    />{' '} */}
                                   </td>
                                 )}
 
@@ -440,10 +450,19 @@ const FormPage = props => {
                                 )}
                                 {item.question_type == 2 && (
                                   <td>
-                                    <img
+                                    <Iframe
+                                      url={item.question}
+                                      width="120px"
+                                      height="120px"
+                                      id="myId"
+                                      className="myClassname"
+                                      display="initial"
+                                      position="relative"
+                                    />
+                                    {/* <img
                                       src={item.question}
                                       style={{ width: '25%' }}
-                                    />{' '}
+                                    />{' '} */}
                                   </td>
                                 )}
 
