@@ -59,5 +59,19 @@
   height: 100%;
   background: linear-gradient(to top, #43c6ac, #f8ffae);
 }
+.spinner-border {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border 0.75s linear infinite;
+  position: fixed;
+  top: 50%;
+  right: 50%;
+  color: burlywood;
+}
 
 // demos (only for demo pages)

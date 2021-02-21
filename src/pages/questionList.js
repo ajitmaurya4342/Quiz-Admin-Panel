@@ -15,11 +15,14 @@ import {
   Row,
   Table,
   Button,
+  Spinner,
+  Fade,
 } from 'reactstrap';
 import QuestionService from '../apiServices/QuestionService';
 import { MdEdit } from 'react-icons/md';
 
 const QuestionListPage = props => {
+  const [isLoading, updateIsLoading] = useState(false);
   const columns = [
     {
       dataField: 'question',
@@ -98,12 +101,15 @@ const QuestionListPage = props => {
     getUserList();
   }, []);
   const getUserList = e => {
+    updateIsLoading(true);
+
     // ... submit to API or something
     QuestionService.GetQuestionList()
       .then(response => {
         const { data } = response;
         if (data && data.status === true) {
           newQuestionDataArray(data.Record.data);
+          updateIsLoading(false);
         } else {
         }
       })
@@ -126,31 +132,37 @@ const QuestionListPage = props => {
 
   return (
     <div className="mb-3">
-      <Row>
-        <Col sm="12" md={{ size: 12, offset: 0 }}>
-          <Card className="m-3">
-            <CardHeader>
-              Questions{' '}
-              <Button
-                color="success"
-                onClick={handleNewQuestion}
-                className="float-right"
-              >
-                Add Question
-              </Button>{' '}
-            </CardHeader>
-            <CardBody>
-              <BootstrapTable
-                keyField="id"
-                data={questionDataArray}
-                columns={columns}
-                pagination={paginationFactory()}
-                filter={filterFactory()}
-              />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+      <Fade in={true} timeout={200}>
+        {isLoading === true ? (
+          <Spinner style={{ width: '3rem', height: '3rem' }}></Spinner>
+        ) : (
+          <Row>
+            <Col sm="12" md={{ size: 12, offset: 0 }}>
+              <Card className="m-3">
+                <CardHeader>
+                  Questions{' '}
+                  <Button
+                    color="success"
+                    onClick={handleNewQuestion}
+                    className="float-right"
+                  >
+                    Add Question
+                  </Button>{' '}
+                </CardHeader>
+                <CardBody>
+                  <BootstrapTable
+                    keyField="id"
+                    data={questionDataArray}
+                    columns={columns}
+                    pagination={paginationFactory()}
+                    filter={filterFactory()}
+                  />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        )}
+      </Fade>
     </div>
   );
 };

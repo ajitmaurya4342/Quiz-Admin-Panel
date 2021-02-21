@@ -17,6 +17,7 @@ import {
   Label,
   Row,
   Badge,
+  Fade,
 } from 'reactstrap';
 
 const FormPage = props => {
@@ -117,168 +118,174 @@ const FormPage = props => {
   };
   return (
     <div className="mb-3">
-      <Row>
-        <Col sm="12" md={{ size: 12, offset: 0 }}>
-          <Card className="m-3">
-            <CardHeader>
-              <b>Questions</b>
-            </CardHeader>
-            <CardBody>
-              <Form>
-                <FormGroup>
-                  <Label for="exampleGame">Question Type</Label>
-                  <Input
-                    value={formData.question_type}
-                    type="select"
-                    name="question_type"
-                    onChange={handleChange}
-                  >
-                    <option>Select Question Type</option>
-                    <option value="2">Image</option>
-                    <option value="1">Question</option>
-                  </Input>
-                </FormGroup>
-                {formData.question_type === '2' && formData.question && (
-                  <Iframe
-                    url={formData.question}
-                    width="450px"
-                    height="450px"
-                    id="myId"
-                    className="myClassname"
-                    display="initial"
-                    position="relative"
-                  />
-                )}
-                {formData.question_type === '2' && (
-                  <GooglePicker
-                    clientId={
-                      '343300974287-9phv8qccnlv4emssnf602sh9v35lpdte.apps.googleusercontent.com'
-                    }
-                    developerKey={'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI'}
-                    scope={[
-                      'https://www.googleapis.com/auth/docs',
-                      'https://www.googleapis.com/auth/drive.readonly',
-                      'https://www.googleapis.com/auth/drive.metadata.readonly',
-                    ]}
-                    // scope={[]}
-                    // scope={[
-                    //  ,
-                    // ]}
-                    onChange={data => console.log('on change:', data)}
-                    onAuthFailed={data => console.log('on auth failed:', data)}
-                    multiselect={true}
-                    navHidden={true}
-                    authImmediate={false}
-                    viewId={'DOCS'}
-                    mimeTypes={['image/png', 'image/jpeg', 'image/jpg']}
-                    thumbnailLink={true}
-                    createPicker={(google, oauthToken) => {
-                      const googleViewId = google.picker.ViewId.DOCS;
-                      const uploadView = new google.picker.DocsUploadView(
-                        googleViewId,
-                      );
-                      const docsView = new google.picker.DocsView(googleViewId)
-                        .setIncludeFolders(true)
-                        .setSelectFolderEnabled(true);
-
-                      const picker = new window.google.picker.PickerBuilder()
-                        .enableFeature(
-                          google.picker.Feature.SIMPLE_UPLOAD_ENABLED,
+      <Fade in={true} timeout={200}>
+        <Row>
+          <Col sm="12" md={{ size: 12, offset: 0 }}>
+            <Card className="m-3">
+              <CardHeader>
+                <b>Questions</b>
+              </CardHeader>
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label for="exampleGame">Question Type</Label>
+                    <Input
+                      value={formData.question_type}
+                      type="select"
+                      name="question_type"
+                      onChange={handleChange}
+                    >
+                      <option>Select Question Type</option>
+                      <option value="2">Image</option>
+                      <option value="1">Question</option>
+                    </Input>
+                  </FormGroup>
+                  {formData.question_type === '2' && formData.question && (
+                    <Iframe
+                      url={formData.question}
+                      width="450px"
+                      height="450px"
+                      id="myId"
+                      className="myClassname"
+                      display="initial"
+                      position="relative"
+                    />
+                  )}
+                  {formData.question_type === '2' && (
+                    <GooglePicker
+                      clientId={
+                        '343300974287-9phv8qccnlv4emssnf602sh9v35lpdte.apps.googleusercontent.com'
+                      }
+                      developerKey={'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI'}
+                      scope={[
+                        'https://www.googleapis.com/auth/docs',
+                        'https://www.googleapis.com/auth/drive.readonly',
+                        'https://www.googleapis.com/auth/drive.metadata.readonly',
+                      ]}
+                      // scope={[]}
+                      // scope={[
+                      //  ,
+                      // ]}
+                      onChange={data => console.log('on change:', data)}
+                      onAuthFailed={data =>
+                        console.log('on auth failed:', data)
+                      }
+                      multiselect={true}
+                      navHidden={true}
+                      authImmediate={false}
+                      viewId={'DOCS'}
+                      mimeTypes={['image/png', 'image/jpeg', 'image/jpg']}
+                      thumbnailLink={true}
+                      createPicker={(google, oauthToken) => {
+                        const googleViewId = google.picker.ViewId.DOCS;
+                        const uploadView = new google.picker.DocsUploadView(
+                          googleViewId,
+                        );
+                        const docsView = new google.picker.DocsView(
+                          googleViewId,
                         )
-                        .enableFeature(
-                          google.picker.Feature.MULTISELECT_ENABLED,
-                        )
-                        .addView(docsView)
-                        .addView(uploadView) /*DocsUploadView added*/
-                        .setOAuthToken(oauthToken)
-                        .setDeveloperKey(
-                          'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI',
-                        )
-                        .setCallback(data => {
-                          if (data.action == google.picker.Action.PICKED) {
-                            var fileId = data.docs[0].id;
-                            let copyOfObject = {
-                              ...formData,
-                              question:
-                                'https://drive.google.com/file/d/' +
-                                fileId +
-                                '/preview?usp=drive_web',
-                            };
+                          .setIncludeFolders(true)
+                          .setSelectFolderEnabled(true);
 
-                            updateFormData(copyOfObject);
+                        const picker = new window.google.picker.PickerBuilder()
+                          .enableFeature(
+                            google.picker.Feature.SIMPLE_UPLOAD_ENABLED,
+                          )
+                          .enableFeature(
+                            google.picker.Feature.MULTISELECT_ENABLED,
+                          )
+                          .addView(docsView)
+                          .addView(uploadView) /*DocsUploadView added*/
+                          .setOAuthToken(oauthToken)
+                          .setDeveloperKey(
+                            'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI',
+                          )
+                          .setCallback(data => {
+                            if (data.action == google.picker.Action.PICKED) {
+                              var fileId = data.docs[0].id;
+                              let copyOfObject = {
+                                ...formData,
+                                question:
+                                  'https://drive.google.com/file/d/' +
+                                  fileId +
+                                  '/preview?usp=drive_web',
+                              };
 
-                            // alert('The user selected: ' + fileId);
-                            // picker();
-                          }
-                        });
-                      picker.build().setVisible(true);
-                    }}
-                  >
-                    {/* <Button color="success">Click here</Button> */}
-                    <h5>
-                      <Badge color="success">Click To Upload File</Badge>
-                    </h5>
-                    {/* <a>Click To Upload File</a> */}
-                    <div className="google mb-2"></div>
-                  </GooglePicker>
-                )}
+                              updateFormData(copyOfObject);
 
-                <FormGroup>
-                  <Label for="exampleText">Question</Label>
-                  <Input
-                    disabled={formData.question_type === '2'}
-                    value={formData.question}
-                    type="textarea"
-                    name="question"
-                    onChange={handleChange}
-                  />
-                </FormGroup>
-
-                {answerArry.map((item, index) => (
-                  <div className="d-flex bd-highlight">
-                    <div className="p-2 flex-fill bd-highlight">
-                      <FormGroup>
-                        <Label for="options">Answer {index + 1}</Label>
-                        <Input
-                          type="text"
-                          name="answerArry"
-                          value={item}
-                          onChange={handleChangeAnswer(index)}
-                        />
-                      </FormGroup>
-                    </div>
-                    <div className="p-2 flex-fill bd-highlight">
-                      <FormGroup check className=" mt-5">
-                        <Label check>
-                          <Input
-                            checked={
-                              formData.correct_options == index &&
-                              formData.correct_options
-                                ? true
-                                : false
+                              // alert('The user selected: ' + fileId);
+                              // picker();
                             }
-                            type="radio"
-                            name="correct_options"
-                            value={index}
-                            onChange={handleChange}
-                          />{' '}
-                          Correct Answer
-                        </Label>
-                      </FormGroup>
+                          });
+                        picker.build().setVisible(true);
+                      }}
+                    >
+                      {/* <Button color="success">Click here</Button> */}
+                      <h5>
+                        <Badge color="success">Click To Upload File</Badge>
+                      </h5>
+                      {/* <a>Click To Upload File</a> */}
+                      <div className="google mb-2"></div>
+                    </GooglePicker>
+                  )}
+
+                  <FormGroup>
+                    <Label for="exampleText">Question</Label>
+                    <Input
+                      disabled={formData.question_type === '2'}
+                      value={formData.question}
+                      type="textarea"
+                      name="question"
+                      onChange={handleChange}
+                    />
+                  </FormGroup>
+
+                  {answerArry.map((item, index) => (
+                    <div className="d-flex bd-highlight">
+                      <div className="p-2 flex-fill bd-highlight">
+                        <FormGroup>
+                          <Label for="options">Answer {index + 1}</Label>
+                          <Input
+                            type="text"
+                            name="answerArry"
+                            value={item}
+                            onChange={handleChangeAnswer(index)}
+                          />
+                        </FormGroup>
+                      </div>
+                      <div className="p-2 flex-fill bd-highlight">
+                        <FormGroup check className=" mt-5">
+                          <Label check>
+                            <Input
+                              checked={
+                                formData.correct_options == index &&
+                                formData.correct_options
+                                  ? true
+                                  : false
+                              }
+                              type="radio"
+                              name="correct_options"
+                              value={index}
+                              onChange={handleChange}
+                            />{' '}
+                            Correct Answer
+                          </Label>
+                        </FormGroup>
+                      </div>
                     </div>
+                  ))}
+                  <NotificationSystem ref={notificationSystem} />
+                  <div>
+                    <Button color="success" onClick={handleSubmit}>
+                      Submit
+                    </Button>
                   </div>
-                ))}
-                <NotificationSystem ref={notificationSystem} />
-                <div>
-                  <Button color="success" onClick={handleSubmit}>
-                    Submit
-                  </Button>
-                </div>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Fade>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import {
   Row,
   Table,
   Button,
+  Fade,
 } from 'reactstrap';
 import QuestionService from '../apiServices/QuestionService';
 import { MdEdit } from 'react-icons/md';
@@ -107,32 +108,34 @@ const QuestionListPage = props => {
 
   return (
     <div className="mb-3">
-      <Row>
-        <Col sm="12" md={{ size: 12, offset: 0 }}>
-          <Card className="m-3">
-            <CardHeader>
-              Level Set{' '}
-              {/* <Button
+      <Fade in={true} timeout={200}>
+        <Row>
+          <Col sm="12" md={{ size: 12, offset: 0 }}>
+            <Card className="m-3">
+              <CardHeader>
+                Level Set{' '}
+                {/* <Button
                 color="success"
                 onClick={handleNewQuestion}
                 className="float-right"
               >
                 Add New Set
               </Button>{' '} */}
-            </CardHeader>
+              </CardHeader>
 
-            <CardBody>
-              <BootstrapTable
-                keyField="id"
-                data={questionDataArray}
-                columns={columns}
-                pagination={paginationFactory()}
-                filter={filterFactory()}
-              />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+              <CardBody>
+                <BootstrapTable
+                  keyField="id"
+                  data={questionDataArray}
+                  columns={columns}
+                  pagination={paginationFactory()}
+                  filter={filterFactory()}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Fade>
     </div>
   );
 };

@@ -21,6 +21,7 @@ import {
   Label,
   Row,
   Table,
+  Fade,
 } from 'reactstrap';
 
 const FormPage = props => {
@@ -294,207 +295,212 @@ const FormPage = props => {
   };
   return (
     <div className="mb-3">
-      <Row>
-        <Col sm="12" md={{ size: 12, offset: 0 }}>
-          <Card className="m-3">
-            <CardHeader>
-              <b>Level Questions Set</b>
-              <br></br>
-              <br></br>
-              <b>Game : {formData.game_name}</b>
-              <br></br>
-              <b>Level : {formData.level}</b>
-            </CardHeader>
+      <Fade in={true} timeout={200}>
+        <Row>
+          <Col sm="12" md={{ size: 12, offset: 0 }}>
+            <Card className="m-3">
+              <CardHeader>
+                <b>Level Questions Set</b>
+                <br></br>
+                <br></br>
+                <b>Game : {formData.game_name}</b>
+                <br></br>
+                <b>Level : {formData.level}</b>
+              </CardHeader>
 
-            <CardBody>
-              <Form>
-                <div className="row">
-                  <div className="col-md-6">
-                    <label>
-                      Added Question{' '}
-                      <b>
-                        {''} {levelAddedAnsAry.length}
-                      </b>
-                    </label>
-                  </div>
-                  <div className="col-md-6">
-                    <FormGroup>
-                      <Label for="exampleGame">
-                        All Questions{' '}
+              <CardBody>
+                <Form>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label>
+                        Added Question{' '}
                         <b>
-                          {''}
-                          {questionDataArray.length}
+                          {''} {levelAddedAnsAry.length}
                         </b>
-                      </Label>
-                    </FormGroup>
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div
-                    className="col-md-6"
-                    style={{
-                      maxHeight: '600px',
-
-                      overflowY: 'auto',
-                    }}
-                  >
-                    {levelAddedAnsAry.length > 0 && (
-                      <Table responsive bordered>
-                        <thead>
-                          <tr>
-                            {/* <th>SR.No</th> */}
-                            <th>Question</th>
-                            <th>Type</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {levelAddedAnsAry.map((item, index) => {
-                            return (
-                              <tr>
-                                {/* <td>{index + 1}</td> */}
-                                {item.question_type == 1 && (
-                                  <td>{item.question}</td>
-                                )}
-                                {item.question_type == 2 && (
-                                  <td>
-                                    <Iframe
-                                      url={item.question}
-                                      width="120px"
-                                      height="120px"
-                                      id="myId"
-                                      className="myClassname"
-                                      display="initial"
-                                      position="relative"
-                                    />
-                                    {/* <img
-                                      src={item.question}
-                                      style={{ width: '25%' }}
-                                    />{' '} */}
-                                  </td>
-                                )}
-
-                                <td>
-                                  {item.question_type == '2'
-                                    ? 'Image'
-                                    : 'Question'}
-                                </td>
-                                <th scope="row">
-                                  {' '}
-                                  <FormGroup check>
-                                    <div className="checkbox disabled">
-                                      <Button
-                                        onClick={() =>
-                                          RemoveQuestion(item, index)
-                                        }
-                                        outline
-                                        color="success"
-                                        size="sm"
-                                      >
-                                        Remove
-                                      </Button>
-                                    </div>
-                                  </FormGroup>
-                                </th>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
-                    )}
-                  </div>
-
-                  <div
-                    className="col-md-6"
-                    style={{
-                      maxHeight: '600px',
-
-                      overflowY: 'auto',
-                    }}
-                  >
-                    <div>
+                      </label>
+                    </div>
+                    <div className="col-md-6">
                       <FormGroup>
-                        <Input
-                          value={searchData}
-                          type="text"
-                          placeHolder="Search Question"
-                          name="level_id"
-                          onChange={searchTable}
-                        >
-                          <option value="">Select Level</option>
-                          {levelData.map((item, index) => (
-                            <option value={item.level_id}>{item.level}</option>
-                          ))}
-                        </Input>
+                        <Label for="exampleGame">
+                          All Questions{' '}
+                          <b>
+                            {''}
+                            {questionDataArray.length}
+                          </b>
+                        </Label>
                       </FormGroup>
                     </div>
+                  </div>
 
-                    {questionDataArray.length > 0 && (
-                      <Table responsive bordered className="mt-2">
-                        <thead>
-                          <tr>
-                            {/* <th>SR.No</th> */}
-                            <th>Question</th>
-                            <th>Type</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {questionDataArray.map((item, index) => {
-                            return (
-                              <tr>
-                                {/* <td>{index + 1}</td> */}
-                                {item.question_type == 1 && (
-                                  <td>{item.question}</td>
-                                )}
-                                {item.question_type == 2 && (
-                                  <td>
-                                    <Iframe
-                                      url={item.question}
-                                      width="120px"
-                                      height="120px"
-                                      id="myId"
-                                      className="myClassname"
-                                      display="initial"
-                                      position="relative"
-                                    />
-                                    {/* <img
+                  <div className="row">
+                    <div
+                      className="col-md-6"
+                      style={{
+                        maxHeight: '600px',
+
+                        overflowY: 'auto',
+                      }}
+                    >
+                      {levelAddedAnsAry.length > 0 && (
+                        <Table responsive bordered>
+                          <thead>
+                            <tr>
+                              {/* <th>SR.No</th> */}
+                              <th>Question</th>
+                              <th>Type</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {levelAddedAnsAry.map((item, index) => {
+                              return (
+                                <tr>
+                                  {/* <td>{index + 1}</td> */}
+                                  {item.question_type == 1 && (
+                                    <td>{item.question}</td>
+                                  )}
+                                  {item.question_type == 2 && (
+                                    <td>
+                                      <Iframe
+                                        url={item.question}
+                                        width="120px"
+                                        height="120px"
+                                        id="myId"
+                                        className="myClassname"
+                                        display="initial"
+                                        position="relative"
+                                      />
+                                      {/* <img
                                       src={item.question}
                                       style={{ width: '25%' }}
                                     />{' '} */}
-                                  </td>
-                                )}
+                                    </td>
+                                  )}
 
-                                <td>
-                                  {item.question_type == '2'
-                                    ? 'Image'
-                                    : 'Question'}
-                                </td>
-                                <th scope="row">
-                                  {' '}
-                                  <FormGroup check>
-                                    <div className="checkbox disabled">
-                                      <Button
-                                        onClick={() => AddQuestion(item, index)}
-                                        outline
-                                        color="success"
-                                        size="sm"
-                                      >
-                                        Add To Level
-                                      </Button>
-                                    </div>
-                                  </FormGroup>
-                                </th>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
-                    )}
+                                  <td>
+                                    {item.question_type == '2'
+                                      ? 'Image'
+                                      : 'Question'}
+                                  </td>
+                                  <th scope="row">
+                                    {' '}
+                                    <FormGroup check>
+                                      <div className="checkbox disabled">
+                                        <Button
+                                          onClick={() =>
+                                            RemoveQuestion(item, index)
+                                          }
+                                          outline
+                                          color="success"
+                                          size="sm"
+                                        >
+                                          Remove
+                                        </Button>
+                                      </div>
+                                    </FormGroup>
+                                  </th>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </Table>
+                      )}
+                    </div>
+
+                    <div
+                      className="col-md-6"
+                      style={{
+                        maxHeight: '600px',
+
+                        overflowY: 'auto',
+                      }}
+                    >
+                      <div>
+                        <FormGroup>
+                          <Input
+                            value={searchData}
+                            type="text"
+                            placeHolder="Search Question"
+                            name="level_id"
+                            onChange={searchTable}
+                          >
+                            <option value="">Select Level</option>
+                            {levelData.map((item, index) => (
+                              <option value={item.level_id}>
+                                {item.level}
+                              </option>
+                            ))}
+                          </Input>
+                        </FormGroup>
+                      </div>
+
+                      {questionDataArray.length > 0 && (
+                        <Table responsive bordered className="mt-2">
+                          <thead>
+                            <tr>
+                              {/* <th>SR.No</th> */}
+                              <th>Question</th>
+                              <th>Type</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {questionDataArray.map((item, index) => {
+                              return (
+                                <tr>
+                                  {/* <td>{index + 1}</td> */}
+                                  {item.question_type == 1 && (
+                                    <td>{item.question}</td>
+                                  )}
+                                  {item.question_type == 2 && (
+                                    <td>
+                                      <Iframe
+                                        url={item.question}
+                                        width="120px"
+                                        height="120px"
+                                        id="myId"
+                                        className="myClassname"
+                                        display="initial"
+                                        position="relative"
+                                      />
+                                      {/* <img
+                                      src={item.question}
+                                      style={{ width: '25%' }}
+                                    />{' '} */}
+                                    </td>
+                                  )}
+
+                                  <td>
+                                    {item.question_type == '2'
+                                      ? 'Image'
+                                      : 'Question'}
+                                  </td>
+                                  <th scope="row">
+                                    {' '}
+                                    <FormGroup check>
+                                      <div className="checkbox disabled">
+                                        <Button
+                                          onClick={() =>
+                                            AddQuestion(item, index)
+                                          }
+                                          outline
+                                          color="success"
+                                          size="sm"
+                                        >
+                                          Add To Level
+                                        </Button>
+                                      </div>
+                                    </FormGroup>
+                                  </th>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </Table>
+                      )}
+                    </div>
                   </div>
-                </div>
-                {/* <FormGroup>
+                  {/* <FormGroup>
                   <Label for="exampleGame">Game</Label>
                   <Input
                     disabled
@@ -510,7 +516,7 @@ const FormPage = props => {
                   </Input>
                 </FormGroup> */}
 
-                {/* <FormGroup>
+                  {/* <FormGroup>
                   <Label for="exampleGame">Level</Label>
                   <Input
                     value={formData.level_id}
@@ -525,18 +531,19 @@ const FormPage = props => {
                     ))}
                   </Input>
                 </FormGroup> */}
-                {formData.question_id.length > 0 && (
-                  <div className="mt-4">
-                    <Button color="success" onClick={handleSubmit}>
-                      Submit
-                    </Button>
-                  </div>
-                )}
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+                  {formData.question_id.length > 0 && (
+                    <div className="mt-4">
+                      <Button color="success" onClick={handleSubmit}>
+                        Submit
+                      </Button>
+                    </div>
+                  )}
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Fade>
     </div>
   );
 };
