@@ -1,6 +1,8 @@
 import React, { useState, useEffect, createRef } from 'react';
 import QuestionService from '../apiServices/QuestionService';
 import NotificationSystem from 'react-notification-system';
+import GooglePicker from 'react-google-picker';
+import Iframe from 'react-iframe';
 import {
   Alert,
   Button,
@@ -14,6 +16,7 @@ import {
   Input,
   Label,
   Row,
+  Badge,
 } from 'reactstrap';
 
 const FormPage = props => {
@@ -41,6 +44,7 @@ const FormPage = props => {
     question_id: '',
   });
   const [formData, updateFormData] = useState(initialFormData);
+  const [imgUrl, updateImgUrl] = useState('ajit');
   const [answerArry, updateAnswerArry] = useState(['', '', '', '']);
   const handleChange = e => {
     updateFormData({
@@ -83,7 +87,6 @@ const FormPage = props => {
     e.preventDefault();
     e.persist();
     formData.options = answerArry.toString();
-    console.log(formData);
 
     QuestionService.AddQuestion(formData)
       .then(response => {
@@ -115,8 +118,8 @@ const FormPage = props => {
   return (
     <div className="mb-3">
       <Row>
-        <Col sm="12" md={{ size: 10, offset: 1 }}>
-          <Card>
+        <Col sm="12" md={{ size: 12, offset: 0 }}>
+          <Card className="m-3">
             <CardHeader>
               <b>Questions</b>
             </CardHeader>
@@ -135,18 +138,89 @@ const FormPage = props => {
                     <option value="1">Question</option>
                   </Input>
                 </FormGroup>
+                {formData.question_type === '2' && formData.question && (
+                  <Iframe
+                    url={formData.question}
+                    width="450px"
+                    height="450px"
+                    id="myId"
+                    className="myClassname"
+                    display="initial"
+                    position="relative"
+                  />
+                )}
                 {formData.question_type === '2' && (
-                  <FormGroup>
-                    <Label for="exampleFile">Upload Image File</Label>
-                    <Input
-                      type="file"
-                      name="imageFile"
-                      onChange={handleChange}
-                    />
-                    <FormText color="muted">
-                      please Upload question image
-                    </FormText>
-                  </FormGroup>
+                  <GooglePicker
+                    clientId={
+                      '343300974287-9phv8qccnlv4emssnf602sh9v35lpdte.apps.googleusercontent.com'
+                    }
+                    developerKey={'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI'}
+                    scope={[
+                      'https://www.googleapis.com/auth/docs',
+                      'https://www.googleapis.com/auth/drive.readonly',
+                      'https://www.googleapis.com/auth/drive.metadata.readonly',
+                    ]}
+                    // scope={[]}
+                    // scope={[
+                    //  ,
+                    // ]}
+                    onChange={data => console.log('on change:', data)}
+                    onAuthFailed={data => console.log('on auth failed:', data)}
+                    multiselect={true}
+                    navHidden={true}
+                    authImmediate={false}
+                    viewId={'DOCS'}
+                    mimeTypes={['image/png', 'image/jpeg', 'image/jpg']}
+                    thumbnailLink={true}
+                    createPicker={(google, oauthToken) => {
+                      const googleViewId = google.picker.ViewId.DOCS;
+                      const uploadView = new google.picker.DocsUploadView(
+                        googleViewId,
+                      );
+                      const docsView = new google.picker.DocsView(googleViewId)
+                        .setIncludeFolders(true)
+                        .setSelectFolderEnabled(true);
+
+                      const picker = new window.google.picker.PickerBuilder()
+                        .enableFeature(
+                          google.picker.Feature.SIMPLE_UPLOAD_ENABLED,
+                        )
+                        .enableFeature(
+                          google.picker.Feature.MULTISELECT_ENABLED,
+                        )
+                        .addView(docsView)
+                        .addView(uploadView) /*DocsUploadView added*/
+                        .setOAuthToken(oauthToken)
+                        .setDeveloperKey(
+                          'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI',
+                        )
+                        .setCallback(data => {
+                          if (data.action == google.picker.Action.PICKED) {
+                            var fileId = data.docs[0].id;
+                            let copyOfObject = {
+                              ...formData,
+                              question:
+                                'https://drive.google.com/file/d/' +
+                                fileId +
+                                '/preview?usp=drive_web',
+                            };
+
+                            updateFormData(copyOfObject);
+
+                            // alert('The user selected: ' + fileId);
+                            // picker();
+                          }
+                        });
+                      picker.build().setVisible(true);
+                    }}
+                  >
+                    {/* <Button color="success">Click here</Button> */}
+                    <h5>
+                      <Badge color="success">Click To Upload File</Badge>
+                    </h5>
+                    {/* <a>Click To Upload File</a> */}
+                    <div className="google mb-2"></div>
+                  </GooglePicker>
                 )}
 
                 <FormGroup>

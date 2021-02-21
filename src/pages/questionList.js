@@ -62,7 +62,7 @@ const QuestionListPage = props => {
           <Button
             onClick={() => handleEditQuestion(row.question_id)}
             outline
-            color="success"
+            color={row.level_q_id ? 'warning' : 'success'}
             size="sm"
           >
             <MdEdit /> Edit
