@@ -13,6 +13,7 @@ import {
   Input,
   Label,
   Row,
+  Fade,
 } from 'reactstrap';
 import {
   BrowserRouter,
@@ -63,49 +64,51 @@ const LoginForm = () => {
   return (
     <div class="section-1-container section-container loginDiv row align-items-center">
       <div className="container">
-        <Row>
-          <Col sm="12" md={{ size: 4, offset: 4 }}>
-            <Card style={{ borderRadius: '10px' }}>
-              <CardBody>
-                <Form>
-                  <div className="text-center pb-4">
-                    <CardHeader>
-                      <b>Quiz IQ</b>
-                    </CardHeader>
-                  </div>
+        <Fade in={true} timeout={150}>
+          <Row>
+            <Col sm="12" md={{ size: 4, offset: 4 }}>
+              <Card style={{ borderRadius: '10px' }}>
+                <CardBody>
+                  <Form>
+                    <div className="text-center pb-4">
+                      <CardHeader>
+                        <b>Quiz IQ</b>
+                      </CardHeader>
+                    </div>
 
-                  <FormGroup>
-                    <Label for="username">Username</Label>
-                    <Input
-                      type="text"
-                      name="user_name"
-                      onChange={handleChange}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="username">Password</Label>
-                    <Input
-                      type="password"
-                      name="password"
-                      onChange={handleChange}
-                    />
-                  </FormGroup>
+                    <FormGroup>
+                      <Label for="username">Username</Label>
+                      <Input
+                        type="text"
+                        name="user_name"
+                        onChange={handleChange}
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="username">Password</Label>
+                      <Input
+                        type="password"
+                        name="password"
+                        onChange={handleChange}
+                      />
+                    </FormGroup>
 
-                  <hr />
-                  <Button
-                    size="lg"
-                    color="warning"
-                    block
-                    value="/dashboard"
-                    onClick={handleSubmit}
-                  >
-                    Login
-                  </Button>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+                    <hr />
+                    <Button
+                      size="lg"
+                      color="warning"
+                      block
+                      value="/dashboard"
+                      onClick={handleSubmit}
+                    >
+                      Login
+                    </Button>
+                  </Form>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Fade>
       </div>
     </div>
   );
