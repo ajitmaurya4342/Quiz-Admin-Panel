@@ -361,14 +361,10 @@ const FormPage = props => {
                                   )}
                                   {item.question_type == 2 && (
                                     <td>
-                                      <Iframe
-                                        url={item.question}
+                                      <img
+                                        src={item.question}
                                         width="120px"
                                         height="120px"
-                                        id="myId"
-                                        className="myClassname"
-                                        display="initial"
-                                        position="relative"
                                       />
                                       {/* <img
                                       src={item.question}
@@ -454,14 +450,11 @@ const FormPage = props => {
                                   )}
                                   {item.question_type == 2 && (
                                     <td>
-                                      <Iframe
-                                        url={item.question}
+                                      <img
+                                        src={item.question}
                                         width="120px"
                                         height="120px"
-                                        id="myId"
-                                        className="myClassname"
-                                        display="initial"
-                                        position="relative"
+                                     
                                       />
                                       {/* <img
                                       src={item.question}

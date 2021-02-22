@@ -32,14 +32,11 @@ const QuestionListPage = props => {
         <div>
           <span>
             {row.question_type == '2' ? (
-              <Iframe
-                url={row.question}
-                width="120px"
-                height="120px"
-                id="myId"
-                className="myClassname"
-                display="initial"
-                position="relative"
+              <img
+                src={row.question}
+                width="130px"
+                height="140px"
+               
               />
             ) : (
               row.question
