@@ -196,16 +196,14 @@ const FormPage = props => {
                             console.log(data);
                             if (data.action == google.picker.Action.PICKED) {
                               var fileId = data.docs[0].id;
-                              console.log(data.docs);
+                              let copyOfObject = {
+                                ...formData,
+                                question:
+                                  'https://drive.google.com/uc?export=view&id=' +
+                                  fileId,
+                              };
 
-                              // let copyOfObject = {
-                              //   ...formData,
-                              //   question:
-                              //     'https://drive.google.com/uc?export=view&id=' +
-                              //     fileId,
-                              // };
-
-                              // updateFormData(copyOfObject);
+                              updateFormData(copyOfObject);
 
                               // alert('The user selected: ' + fileId);
                               // picker();
