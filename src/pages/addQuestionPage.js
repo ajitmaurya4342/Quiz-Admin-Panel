@@ -40,6 +40,7 @@ const FormPage = props => {
     imageUrl: '',
     options: '',
     question: '',
+    question_new: "",
     correct_options: '',
     question_is_active: '1',
     question_id: '',
@@ -103,6 +104,7 @@ const FormPage = props => {
             correct_options: '',
             question_is_active: '1',
             question_id: '',
+            question_new: ""
           };
           updateFormData(empObj);
           updateAnswerArry(['', '', '', '']);
@@ -210,6 +212,10 @@ const FormPage = props => {
                                   'https://drive.google.com/file/d/' +
                                   fileId +
                                   '/preview?usp=drive_web',
+                                question_new:
+                                  'https://drive.google.com/thumbnail?id=' +
+                                  fileId,
+
                               };
 
                               updateFormData(copyOfObject);
