@@ -76,7 +76,7 @@ const FormPage = props => {
         .catch(error => {
           console.log('On Catch Add_Submission_Tagging_User', error);
         })
-        .finally(() => {});
+        .finally(() => { });
     }
   }, []);
   function showMsg() {
@@ -92,7 +92,7 @@ const FormPage = props => {
     QuestionService.AddQuestion(formData)
       .then(response => {
         const { data } = response;
-        if (data) {
+        if (data.status) {
           addNotification();
           let empObj = {
             question_type: '',
@@ -112,7 +112,7 @@ const FormPage = props => {
       .catch(error => {
         console.log('On Catch Add_Submission_Tagging_User', error);
       })
-      .finally(() => {});
+      .finally(() => { });
 
     // ... submit to API or something
   };
@@ -194,8 +194,9 @@ const FormPage = props => {
                           .enableFeature(
                             google.picker.Feature.MULTISELECT_ENABLED,
                           )
-                          .addView(docsView)
-                          .addView(uploadView) /*DocsUploadView added*/
+
+                          .addView(uploadView)
+                          .addView(docsView)/*DocsUploadView added*/
                           .setOAuthToken(oauthToken)
                           .setDeveloperKey(
                             'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI',
@@ -259,7 +260,7 @@ const FormPage = props => {
                             <Input
                               checked={
                                 formData.correct_options == index &&
-                                formData.correct_options
+                                  formData.correct_options
                                   ? true
                                   : false
                               }
