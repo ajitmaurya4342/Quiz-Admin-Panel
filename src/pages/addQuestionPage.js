@@ -124,7 +124,6 @@ const FormPage = props => {
             <Card className="m-3">
               <CardHeader>
                 <b>Questions</b>
-              
               </CardHeader>
               <CardBody>
                 <Form>
@@ -142,16 +141,12 @@ const FormPage = props => {
                     </Input>
                   </FormGroup>
                   {formData.question_type === '2' && formData.question && (
-                    <img
-                      src={formData.question}
-                      width="200px"
-                      height="250px"
-                    />
+                    <img src={formData.question} width="200px" height="250px" />
                   )}
                   {formData.question_type === '2' && (
                     <GooglePicker
                       clientId={
-                        '343300974287-9phv8qccnlv4emssnf602sh9v35lpdte.apps.googleusercontent.com'
+                        '343300974287-mm6stif8v0rid9ukoujhbc0b3qtht3dv.apps.googleusercontent.com'
                       }
                       developerKey={'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI'}
                       scope={[
@@ -198,17 +193,19 @@ const FormPage = props => {
                             'AIzaSyBY-7tBQRTRS8p0t8m3NzkhH4PjC8OXSfI',
                           )
                           .setCallback(data => {
-                            console.log(data)
+                            console.log(data);
                             if (data.action == google.picker.Action.PICKED) {
                               var fileId = data.docs[0].id;
-                              let copyOfObject = {
-                                ...formData,
-                                question:
-                                  'https://drive.google.com/uc?export=view&id=' +
-                                  fileId 
-                              };
+                              console.log(data.docs);
 
-                              updateFormData(copyOfObject);
+                              // let copyOfObject = {
+                              //   ...formData,
+                              //   question:
+                              //     'https://drive.google.com/uc?export=view&id=' +
+                              //     fileId,
+                              // };
+
+                              // updateFormData(copyOfObject);
 
                               // alert('The user selected: ' + fileId);
                               // picker();
