@@ -18,7 +18,7 @@ export default {
   },
 
   GetLevelList() {
-    return Api().get('admin/LevelList');
+    return Api().get('admin/LevelList?isDashboard=1');
   },
   EditLevelList(level_id) {
     return Api().get(`admin/LevelList?level_id=${level_id}`);
