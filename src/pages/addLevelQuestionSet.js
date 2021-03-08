@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import QuestionService from '../apiServices/QuestionService';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Iframe from 'react-iframe';
-
+import { useHistory } from 'react-router-dom';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory, {
   PaginationProvider,
@@ -25,6 +25,7 @@ import {
 } from 'reactstrap';
 
 const FormPage = props => {
+  let history = useHistory();
   const initialFormData = Object({
     level_q_id: '',
     game_id: '',
@@ -127,7 +128,11 @@ const FormPage = props => {
 
     console.log(arrayNew);
   }
-
+  function handleEditQuestion(id) {
+    history.push('/questionForm', {
+      question_id: id,
+    });
+  }
   function AddQuestion(row, rowIndex) {
     let dummyV = [...levelAddedAnsAry];
     console.log(row, rowIndex);
@@ -357,7 +362,12 @@ const FormPage = props => {
                                 <tr>
                                   {/* <td>{index + 1}</td> */}
                                   {item.question_type == 1 && (
-                                    <td>{item.question}</td>
+                                    <td>
+                                      {item.question}
+                                      <br></br>
+                                      Options:{item.options}
+                                      <br></br>Answer :{item.correct_options}
+                                    </td>
                                   )}
                                   {item.question_type == 2 && (
                                     <td>
@@ -374,6 +384,9 @@ const FormPage = props => {
                                       src={item.question}
                                       style={{ width: '25%' }}
                                     />{' '} */}
+                                      <br></br>
+                                      Options:{item.options}
+                                      <br></br>Answer :{item.correct_options}
                                     </td>
                                   )}
 
@@ -396,6 +409,22 @@ const FormPage = props => {
                                         >
                                           Remove
                                         </Button>
+                                        <br></br>
+                                        <br></br>
+                                        <Button
+                                          onClick={() =>
+                                            handleEditQuestion(item.question_id)
+                                          }
+                                          outline
+                                          color={
+                                            item.question_id
+                                              ? 'warning'
+                                              : 'success'
+                                          }
+                                          size="sm"
+                                        >
+                                          Edit
+                                        </Button>{' '}
                                       </div>
                                     </FormGroup>
                                   </th>
