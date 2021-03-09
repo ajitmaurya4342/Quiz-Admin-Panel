@@ -52,6 +52,11 @@ const QuestionListPage = props => {
     {
       dataField: 'options',
       text: 'Options',
+      formatter: (cellContent, row) => (
+
+        <div style={
+          row.options.split(",")[0] == row.options.split(",")[1] ? { display: 'block', color: 'red' } : { display: 'block' }}>  {row.options} </div>
+      ),
     },
     {
       dataField: 'correct_options',
