@@ -116,7 +116,7 @@ const QuestionListPage = props => {
       .catch(error => {
         console.log('On Catch Add_Submission_Tagging_User', error);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   function handleNewQuestion() {
@@ -129,6 +129,35 @@ const QuestionListPage = props => {
       question_id: id,
     });
   }
+
+  const sizePerPageRenderer = ({
+    options,
+    currSizePerPage,
+    onSizePerPageChange
+  }) => (
+    <div className="btn-group" role="group">
+      {
+        options.map((option) => {
+          const isSelect = currSizePerPage === `${option.page}`;
+          return (
+            <button
+              key={option.text}
+              type="button"
+              onClick={() => onSizePerPageChange(option.page)}
+              className={`btn ${isSelect ? 'btn-secondary' : 'btn-warning'}`}
+            >
+              { option.text}
+            </button>
+          );
+        })
+      }
+    </div>
+  );
+
+  const options = {
+    sizePerPageRenderer
+  };
+
 
   return (
     <div className="mb-3">
@@ -154,7 +183,7 @@ const QuestionListPage = props => {
                     keyField="id"
                     data={questionDataArray}
                     columns={columns}
-                    pagination={paginationFactory()}
+                    pagination={paginationFactory(options)}
                     filter={filterFactory()}
                   />
                 </CardBody>
