@@ -113,7 +113,18 @@ const QuestionListPage = props => {
       .then(response => {
         const { data } = response;
         if (data && data.status === true) {
-          newQuestionDataArray(data.Record.data);
+          let array_new_add = [];
+          let array_new_sub = [];
+          // if()
+          data.Record.data.map(x => {
+            if (x.options.split(",")[0] == x.options.split(",")[1]) {
+              array_new_add.push(x);
+            } else {
+              array_new_sub.push(x);
+            }
+          })
+          let newArray = [...array_new_add, ...array_new_sub]
+          newQuestionDataArray(newArray);
           updateIsLoading(false);
         } else {
         }
