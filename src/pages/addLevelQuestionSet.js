@@ -361,14 +361,60 @@ const FormPage = props => {
                                   {/* <td>{index + 1}</td> */}
                                   {item.question_type == 1 && (
                                     <td>
-                                      {item.question}
+                                      Question : {item.question}
                                       <br></br>
-                                      Options:{item.options}
-                                      <br></br>Answer :{item.correct_options}
+                                      Options : {item.options}
+                                      <br></br>Answer :{' '}
+                                      <b>
+                                        {item.options
+                                          ? item.options.split(',')[
+                                              item.correct_options
+                                            ]
+                                          : item.correct_options}
+                                      </b>
+                                      <br></br>Type :{' '}
+                                      {item.question_type == '2'
+                                        ? 'Image'
+                                        : 'Question'}
+                                      {'   '}{' '}
+                                      <Button
+                                        onClick={() =>
+                                          RemoveQuestion(item, index)
+                                        }
+                                        outline
+                                        color="success"
+                                        size="sm"
+                                      >
+                                        Remove
+                                      </Button>{' '}
+                                      <Button
+                                        onClick={() =>
+                                          handleEditQuestion(item.question_id)
+                                        }
+                                        outline
+                                        color={
+                                          item.question_id
+                                            ? 'warning'
+                                            : 'success'
+                                        }
+                                        size="sm"
+                                      >
+                                        Edit Question
+                                      </Button>{' '}
                                     </td>
                                   )}
                                   {item.question_type == 2 && (
                                     <td>
+                                      <Iframe
+                                        url={item.question}
+                                        width="120px"
+                                        height="120px"
+                                        id="myId"
+                                        className="myClassname"
+                                        display="initial"
+                                        position="relative"
+                                      />
+                                      <br></br>
                                       Options:{item.options}
                                       <br></br>
                                       <br></br> Answer :{' '}
@@ -459,7 +505,32 @@ const FormPage = props => {
                                 <tr>
                                   {/* <td>{index + 1}</td> */}
                                   {item.question_type == 1 && (
-                                    <td>{item.question}</td>
+                                    <td>
+                                      Question : {item.question}
+                                      <br></br>
+                                      Options : {item.options}
+                                      <br></br>Answer :{' '}
+                                      <b>
+                                        {item.options
+                                          ? item.options.split(',')[
+                                              item.correct_options
+                                            ]
+                                          : item.correct_options}
+                                      </b>
+                                      <br></br>Type :{' '}
+                                      {item.question_type == '2'
+                                        ? 'Image'
+                                        : 'Question'}
+                                      {'   '}
+                                      <Button
+                                        onClick={() => AddQuestion(item, index)}
+                                        outline
+                                        color="success"
+                                        size="sm"
+                                      >
+                                        Add To Level
+                                      </Button>
+                                    </td>
                                   )}
                                   {item.question_type == 2 && (
                                     <td>
