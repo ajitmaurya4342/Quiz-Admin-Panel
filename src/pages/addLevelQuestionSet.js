@@ -115,13 +115,37 @@ const FormPage = props => {
     updatesearchData(e.target.value);
 
     let arrayNew = tempQuestionDataArray.filter(x => {
-      return (
-        x.question_type
-          .toLowerCase()
-          .toString()
-          .includes(e.target.value.toLowerCase()) ||
-        x.question.toLowerCase().includes(e.target.value.toLowerCase())
-      );
+
+      if (x.question_type
+        .toLowerCase()
+        .toString()
+        .includes(e.target.value.toString().toLowerCase())) {
+        return (
+          x.question_type
+            .toLowerCase()
+            .toString()
+            .includes(e.target.value.toString().toLowerCase())
+
+
+        );
+
+      } else {
+        return (
+          x.options
+            .toLowerCase()
+            .toString()
+            .includes(e.target.value.toString().toLowerCase())
+          ||
+          x.question
+            .toLowerCase()
+            .toString()
+            .includes(e.target.value.toString().toLowerCase())
+
+        );
+
+      }
+
+
     });
 
     newQuestionDataArray(arrayNew);
@@ -264,7 +288,7 @@ const FormPage = props => {
         .catch(error => {
           console.log('On Catch Add_Submission_Tagging_User', error);
         })
-        .finally(() => {});
+        .finally(() => { });
     }
     QuestionService.GetLevelQuestionList()
       .then(response => {
@@ -278,7 +302,7 @@ const FormPage = props => {
       .catch(error => {
         console.log('On Catch Add_Submission_Tagging_User', error);
       })
-      .finally(() => {});
+      .finally(() => { });
   }
   const handleSubmit = e => {
     e.preventDefault();
@@ -294,7 +318,7 @@ const FormPage = props => {
       .catch(error => {
         console.log('On Catch Add_Submission_Tagging_User', error);
       })
-      .finally(() => {});
+      .finally(() => { });
 
     // ... submit to API or something
   };
@@ -368,8 +392,8 @@ const FormPage = props => {
                                       <b>
                                         {item.options
                                           ? item.options.split(',')[
-                                              item.correct_options
-                                            ]
+                                          item.correct_options
+                                          ]
                                           : item.correct_options}
                                       </b>
                                       <br></br>Type :{' '}
@@ -421,8 +445,8 @@ const FormPage = props => {
                                       <b>
                                         {item.options
                                           ? item.options.split(',')[
-                                              item.correct_options
-                                            ]
+                                          item.correct_options
+                                          ]
                                           : item.correct_options}
                                       </b>{' '}
                                       <br></br>
@@ -513,8 +537,8 @@ const FormPage = props => {
                                       <b>
                                         {item.options
                                           ? item.options.split(',')[
-                                              item.correct_options
-                                            ]
+                                          item.correct_options
+                                          ]
                                           : item.correct_options}
                                       </b>
                                       <br></br>Type :{' '}
@@ -540,8 +564,8 @@ const FormPage = props => {
                                       <b>
                                         {item.options
                                           ? item.options.split(',')[
-                                              item.correct_options
-                                            ]
+                                          item.correct_options
+                                          ]
                                           : item.correct_options}
                                       </b>
                                       <br></br>
