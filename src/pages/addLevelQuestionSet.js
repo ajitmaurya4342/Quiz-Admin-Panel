@@ -128,8 +128,7 @@ const FormPage = props => {
 
 
         );
-
-      } else {
+      } else if (x.question && e.target.value != "1" && e.target.value != "2") {
         return (
           x.options
             .toLowerCase()
@@ -143,6 +142,8 @@ const FormPage = props => {
 
         );
 
+      } else {
+        return false
       }
 
 
