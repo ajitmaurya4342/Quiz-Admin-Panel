@@ -24,6 +24,38 @@ import { MdEdit } from 'react-icons/md';
 const QuestionListPage = props => {
   const [isLoading, updateIsLoading] = useState(false);
   const columns = [
+
+    {
+      dataField: '',
+      text: 'Action',
+      formatter: (cellContent, row) => (
+        <div className="checkbox disabled">
+          <Button
+            onClick={() => handleEditQuestion(row.question_id)}
+            outline
+            color={row.level_q_id ? 'warning' : 'success'}
+            size="sm"
+          >
+            <MdEdit /> Edit
+          </Button>{' '}
+        </div>
+      ),
+    },
+
+
+    {
+      dataField: 'options',
+      text: 'Options',
+      formatter: (cellContent, row) => (
+
+        <div style={
+          row.options.split(",")[0] == row.options.split(",")[1] ? { display: 'block', color: 'red' } : { display: 'block' }}>  {row.options} </div>
+      ),
+    },
+    {
+      dataField: 'correct_options',
+      text: 'Correct Option',
+    },
     {
       dataField: 'question',
       text: 'Question',
@@ -48,20 +80,6 @@ const QuestionListPage = props => {
         </div>
       ),
     },
-
-    {
-      dataField: 'options',
-      text: 'Options',
-      formatter: (cellContent, row) => (
-
-        <div style={
-          row.options.split(",")[0] == row.options.split(",")[1] ? { display: 'block', color: 'red' } : { display: 'block' }}>  {row.options} </div>
-      ),
-    },
-    {
-      dataField: 'correct_options',
-      text: 'Correct Option',
-    },
     {
       dataField: 'question_type',
       text: 'Type (1-Ques,2-Img)',
@@ -83,22 +101,6 @@ const QuestionListPage = props => {
       ),
     },
 
-    {
-      dataField: '',
-      text: 'Action',
-      formatter: (cellContent, row) => (
-        <div className="checkbox disabled">
-          <Button
-            onClick={() => handleEditQuestion(row.question_id)}
-            outline
-            color={row.level_q_id ? 'warning' : 'success'}
-            size="sm"
-          >
-            <MdEdit /> Edit
-          </Button>{' '}
-        </div>
-      ),
-    },
   ];
   let history = useHistory();
   const [questionDataArray, newQuestionDataArray] = useState([]);
@@ -183,7 +185,7 @@ const QuestionListPage = props => {
         ) : (
           <Row>
             <Col sm="12" md={{ size: 12, offset: 0 }}>
-              <Card className="m-3">
+              <Card className="m-3 table-responsive">
                 <CardHeader>
                   Questions{' '}
                   <Button
@@ -197,6 +199,7 @@ const QuestionListPage = props => {
                 <CardBody>
                   <BootstrapTable
                     keyField="id"
+
                     data={questionDataArray}
                     columns={columns}
                     pagination={paginationFactory(options)}

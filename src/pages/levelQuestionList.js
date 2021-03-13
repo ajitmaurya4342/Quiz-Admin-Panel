@@ -23,20 +23,6 @@ import { MdEdit } from 'react-icons/md';
 const QuestionListPage = props => {
   const columns = [
     {
-      dataField: 'game_name',
-      text: 'Game Name',
-      filter: textFilter(),
-    },
-    {
-      dataField: 'level',
-      text: 'Level',
-      filter: textFilter(),
-    },
-    {
-      dataField: 'total_question',
-      text: 'Total Question',
-    },
-    {
       dataField: '',
       text: 'Action',
       formatter: (cellContent, row) => (
@@ -52,6 +38,21 @@ const QuestionListPage = props => {
         </div>
       ),
     },
+    {
+      dataField: 'game_name',
+      text: 'Game Name',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'level',
+      text: 'Level',
+      filter: textFilter(),
+    },
+    {
+      dataField: 'total_question',
+      text: 'Total Question',
+    },
+
   ];
   let history = useHistory();
   const [questionDataArray, newQuestionDataArray] = useState([]);
@@ -72,7 +73,7 @@ const QuestionListPage = props => {
       .catch(error => {
         console.log('On Catch Add_Submission_Tagging_User', error);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   const handleEditLevlQ = item => {
@@ -90,7 +91,7 @@ const QuestionListPage = props => {
       .catch(error => {
         console.log('On Catch Add_Submission_Tagging_User', error);
       })
-      .finally(() => {});
+      .finally(() => { });
 
     // ... submit to API or something
   };
@@ -111,7 +112,7 @@ const QuestionListPage = props => {
       <Fade in={true} timeout={200}>
         <Row>
           <Col sm="12" md={{ size: 12, offset: 0 }}>
-            <Card className="m-3">
+            <Card className="m-3 table-responsive">
               <CardHeader>
                 Level Set{' '}
                 {/* <Button
