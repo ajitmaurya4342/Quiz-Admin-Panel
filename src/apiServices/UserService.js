@@ -3,7 +3,7 @@ import { API_VERSION } from '../config/index';
 
 export default {
   GetUserList() {
-    return Api().get('admin/userlist');
+    return Api().get('admin/dashboard_user');
   },
   //   GetSubmissionFeedbacks(payload) {
   //     return Api().post(
