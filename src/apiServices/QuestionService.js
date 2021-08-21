@@ -5,6 +5,10 @@ export default {
   AddQuestion(payload) {
     return Api().post('admin/addEditQuestion', payload);
   },
+
+  sendNotification(payload) {
+    return Api().post('admin/notification_send', payload);
+  },
   GetQuestionList() {
     return Api().get(`admin/questionlist`);
   },
